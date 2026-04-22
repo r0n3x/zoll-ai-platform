@@ -1,21 +1,24 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from sqlmodel import select
+from sqlmodel import Session, select
+from datetime import datetime
 
-from .utils import classify_hs_code, calculate_customs_value
+from .utils import classify_hs_code, calculate_customs_value, fetch_customs_news
 from .database import init_db, get_session
 from .models import (
     ClassifyRequestModel,
     CustomsValueRequestModel,
+    NewsItem,
+    Message,
 )
-from sqlmodel import Session
 
 app = FastAPI(title="LUDARA AI Backend")
 
+# CORS – HIER KANNST DU SPÄTER allow_origins einschränken
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # für Produktion einschränken
+    allow_origins=["*"],  # z.B. ["https://ludara-ai.onrender.com"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,7 +39,11 @@ def on_startup():
 
 @app.get("/")
 def root():
-    return {"status": "LUDARA backend running"}
+    return {"status": "LUDARA backend running", "time": datetime.utcnow()}
+
+# -----------------------------
+# HS-Code
+# -----------------------------
 
 @app.post("/classify")
 def classify(req: ClassifyRequest, session: Session = Depends(get_session)):
@@ -46,6 +53,10 @@ def classify(req: ClassifyRequest, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(entry)
     return {"hs_code": hs, "id": entry.id}
+
+# -----------------------------
+# Zollwert
+# -----------------------------
 
 @app.post("/customs-value")
 def customs_value(req: CustomsValueRequest, session: Session = Depends(get_session)):
@@ -67,6 +78,10 @@ def customs_value(req: CustomsValueRequest, session: Session = Depends(get_sessi
     session.commit()
     session.refresh(entry)
     return {**result, "id": entry.id}
+
+# -----------------------------
+# Events (Verlauf)
+# -----------------------------
 
 @app.get("/events")
 def list_events(limit: int = 50, session: Session = Depends(get_session)):
@@ -93,3 +108,38 @@ def list_events(limit: int = 50, session: Session = Depends(get_session)):
 
     events.sort(key=lambda e: e["time"], reverse=True)
     return events[:limit]
+
+# -----------------------------
+# News
+# -----------------------------
+
+@app.get("/news")
+def get_news(session: Session = Depends(get_session)):
+    stmt = select(NewsItem).order_by(NewsItem.created_at.desc()).limit(20)
+    return session.exec(stmt).all()
+
+@app.post("/news/update")
+def update_news(session: Session = Depends(get_session)):
+    items = fetch_customs_news()
+    for item in items:
+        news = NewsItem(title=item["title"], url=item["url"], source=item["source"])
+        session.add(news)
+    session.commit()
+    return {"status": "updated", "count": len(items)}
+
+# -----------------------------
+# Messenger
+# -----------------------------
+
+@app.post("/messages/send")
+def send_message(sender: str, text: str, session: Session = Depends(get_session)):
+    msg = Message(sender=sender, text=text)
+    session.add(msg)
+    session.commit()
+    session.refresh(msg)
+    return {"status": "sent", "id": msg.id}
+
+@app.get("/messages")
+def get_messages(limit: int = 50, session: Session = Depends(get_session)):
+    stmt = select(Message).order_by(Message.created_at.desc()).limit(limit)
+    return session.exec(stmt).all()
