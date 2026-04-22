@@ -13,226 +13,73 @@
         --light-gray: #e0e0e0;
     }
     * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: var(--bg);
-        color: #333;
-    }
-    .app {
-        display: flex;
-        min-height: 100vh;
-    }
+    body { margin: 0; font-family: Arial, sans-serif; background: var(--bg); color: #333; }
+    .app { display: flex; min-height: 100vh; }
     .sidebar {
-        width: 230px;
-        background: white;
-        border-right: 1px solid var(--light-gray);
-        padding: 20px 15px;
-        display: flex;
-        flex-direction: column;
+        width: 230px; background: white; border-right: 1px solid var(--light-gray);
+        padding: 20px 15px; display: flex; flex-direction: column;
     }
-    .logo-block {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 30px;
-    }
-    .logo-block svg {
-        width: 40px;
-        height: 40px;
-    }
-    .logo-text-main {
-        font-size: 22px;
-        font-weight: bold;
-        color: var(--blue);
-    }
-    .logo-text-sub {
-        font-size: 11px;
-        color: #777;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .nav {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
+    .logo-block { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+    .logo-block svg { width: 40px; height: 40px; }
+    .logo-text-main { font-size: 22px; font-weight: bold; color: var(--blue); }
+    .logo-text-sub { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
+    .nav { display: flex; flex-direction: column; gap: 8px; }
     .nav button {
-        text-align: left;
-        padding: 10px 12px;
-        border-radius: 6px;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        font-size: 14px;
-        color: #444;
+        text-align: left; padding: 10px 12px; border-radius: 6px; border: none;
+        background: transparent; cursor: pointer; font-size: 14px; color: #444;
     }
-    .nav button.active {
-        background: var(--light-blue);
-        color: var(--blue);
-        font-weight: bold;
-    }
-    .sidebar-footer {
-        margin-top: auto;
-        font-size: 11px;
-        color: #999;
-    }
-    .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+    .nav button.active { background: var(--light-blue); color: var(--blue); font-weight: bold; }
+    .sidebar-footer { margin-top: auto; font-size: 11px; color: #999; }
+    .main { flex: 1; display: flex; flex-direction: column; }
     .topbar {
-        background: white;
-        border-bottom: 1px solid var(--light-gray);
-        padding: 10px 20px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 10px;
+        background: white; border-bottom: 1px solid var(--light-gray);
+        padding: 10px 20px; display: flex; justify-content: flex-end; align-items: center;
     }
-    .user-pill {
-        padding: 6px 10px;
-        border-radius: 20px;
-        background: var(--beige);
-        font-size: 13px;
-    }
-    .content {
-        padding: 25px;
-        max-width: 1100px;
-        margin: 0 auto;
-        width: 100%;
-    }
-    h1 {
-        margin-top: 0;
-        margin-bottom: 5px;
-    }
-    .subtitle {
-        color: #777;
-        margin-bottom: 20px;
-    }
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-    }
-    .card {
-        background: white;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        padding: 18px;
-    }
-    .card-header {
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: var(--blue);
-    }
-    label {
-        font-weight: bold;
-        margin-top: 10px;
-        display: block;
-        font-size: 13px;
-    }
+    .user-pill { padding: 6px 10px; border-radius: 20px; background: var(--beige); font-size: 13px; }
+    .content { padding: 25px; max-width: 1100px; margin: 0 auto; width: 100%; }
+    h1 { margin-top: 0; margin-bottom: 5px; }
+    .subtitle { color: #777; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: white; border-radius: 10px; border: 1px solid #ddd; padding: 18px; }
+    .card-header { font-weight: bold; margin-bottom: 10px; color: var(--blue); }
+    label { font-weight: bold; margin-top: 10px; display: block; font-size: 13px; }
     input, textarea, select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 4px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        background: #f0f4fa;
-        font-size: 14px;
+        width: 100%; padding: 8px; margin-top: 4px; border-radius: 6px;
+        border: 1px solid #ccc; background: #f0f4fa; font-size: 14px;
     }
     textarea { resize: vertical; }
     button.primary {
-        margin-top: 12px;
-        padding: 10px 16px;
-        background: var(--blue);
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
+        margin-top: 12px; padding: 10px 16px; background: var(--blue); color: white;
+        border: none; border-radius: 6px; cursor: pointer; font-size: 14px;
     }
     button.primary:hover { background: var(--blue-dark); }
     .result-box {
-        background: var(--light-blue);
-        padding: 10px;
-        border-radius: 6px;
-        margin-top: 10px;
-        border: 1px solid #cdd9f5;
-        white-space: pre-wrap;
-        font-size: 13px;
+        background: var(--light-blue); padding: 10px; border-radius: 6px;
+        margin-top: 10px; border: 1px solid #cdd9f5; white-space: pre-wrap; font-size: 13px;
     }
-    .badge {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 999px;
-        font-size: 11px;
-        background: var(--light-blue);
-        color: var(--blue);
-        margin-left: 6px;
-    }
-    .muted {
-        font-size: 12px;
-        color: #777;
-    }
-    .history-item {
-        border-bottom: 1px solid #eee;
-        padding: 6px 0;
-        font-size: 13px;
-    }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px;
+             background: var(--light-blue); color: var(--blue); margin-left: 6px; }
+    .muted { font-size: 12px; color: #777; }
+    .history-item { border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
     .history-item:last-child { border-bottom: none; }
-    .pill {
-        display: inline-block;
-        padding: 2px 6px;
-        border-radius: 999px;
-        font-size: 11px;
-        background: #f0f0f0;
-        margin-right: 4px;
-    }
+    .pill { display: inline-block; padding: 2px 6px; border-radius: 999px; font-size: 11px;
+            background: #f0f0f0; margin-right: 4px; }
     .login-box {
-        max-width: 360px;
-        margin: 80px auto;
-        background: white;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        padding: 20px;
-        text-align: center;
+        max-width: 360px; margin: 80px auto; background: white; border-radius: 10px;
+        border: 1px solid #ddd; padding: 20px; text-align: center;
     }
-    .login-title {
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-    .login-sub {
-        font-size: 12px;
-        color: #777;
-        margin-bottom: 15px;
-    }
+    .login-title { font-size: 20px; margin-bottom: 5px; }
+    .login-sub { font-size: 12px; color: #777; margin-bottom: 15px; }
     .login-input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 8px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 14px;
+        width: 100%; padding: 8px; margin-top: 8px; border-radius: 6px;
+        border: 1px solid #ccc; font-size: 14px;
     }
     .login-btn {
-        margin-top: 12px;
-        width: 100%;
-        padding: 9px;
-        border-radius: 6px;
-        border: none;
-        background: var(--blue);
-        color: white;
-        cursor: pointer;
-        font-size: 14px;
+        margin-top: 12px; width: 100%; padding: 9px; border-radius: 6px;
+        border: none; background: var(--blue); color: white; cursor: pointer; font-size: 14px;
     }
     .login-btn:hover { background: var(--blue-dark); }
-    .small-note {
-        font-size: 11px;
-        color: #999;
-        margin-top: 8px;
-    }
+    .small-note { font-size: 11px; color: #999; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -341,7 +188,7 @@
 
             <div id="section-history" style="display:none;">
                 <h1>Verlauf</h1>
-                <div class="subtitle">Lokaler Verlauf deiner letzten Anfragen (nur in diesem Browser gespeichert).</div>
+                <div class="subtitle">Verlauf der letzten Anfragen (aus der Datenbank).</div>
                 <div class="card">
                     <div class="card-header">Historie</div>
                     <div id="historyList" class="muted">
@@ -354,7 +201,7 @@
 </div>
 
 <script>
-    const BASE = "https://zoll-ai-platform.onrender.com";
+    const BASE = "https://zoll-ai-platform.onrender.com"; // deine Backend-URL
 
     function fakeLogin() {
         const name = document.getElementById("loginName").value.trim() || "User";
@@ -384,59 +231,65 @@
                 (s === section) ? "block" : "none";
             document.getElementById("nav-" + s).classList.toggle("active", s === section);
         });
+        if (section === "history") loadHistory();
+        if (section === "dashboard") updateStats();
     }
 
-    function getHistory() {
-        try {
-            return JSON.parse(localStorage.getItem("ludaraHistory") || "[]");
-        } catch {
-            return [];
-        }
-    }
-
-    function saveHistory(entry) {
-        const hist = getHistory();
-        hist.unshift(entry);
-        localStorage.setItem("ludaraHistory", JSON.stringify(hist.slice(0, 50)));
-        loadHistory();
-        updateStats();
-    }
-
-    function loadHistory() {
-        const hist = getHistory();
+    async function loadHistory() {
         const container = document.getElementById("historyList");
-        if (!hist.length) {
-            container.textContent = "Noch keine Einträge.";
-            return;
+        container.textContent = "Lade Verlauf...";
+        try {
+            const res = await fetch(BASE + "/events");
+            const data = await res.json();
+            if (!data.length) {
+                container.textContent = "Noch keine Einträge.";
+                return;
+            }
+            container.innerHTML = "";
+            data.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "history-item";
+                const time = new Date(item.time).toLocaleString();
+                if (item.type === "HS") {
+                    div.innerHTML =
+                        '<span class="pill">HS</span>' +
+                        '<span class="muted">' + time + '</span><br>' +
+                        'Beschreibung: ' + (item.description || "").slice(0, 80) +
+                        ' · HS: ' + item.hs_code;
+                } else {
+                    div.innerHTML =
+                        '<span class="pill">Zollwert</span>' +
+                        '<span class="muted">' + time + '</span><br>' +
+                        'Preis: ' + item.price + ' ' + item.currency +
+                        ' · Zollwert: ' + item.customs_value + ' EUR';
+                }
+                container.appendChild(div);
+            });
+        } catch (e) {
+            container.textContent = "Fehler beim Laden: " + e.toString();
         }
-        container.innerHTML = "";
-        hist.forEach(item => {
-            const div = document.createElement("div");
-            div.className = "history-item";
-            div.innerHTML =
-                '<span class="pill">' + item.type + '</span>' +
-                '<span class="muted">' + new Date(item.time).toLocaleString() + '</span><br>' +
-                (item.summary || "");
-            container.appendChild(div);
-        });
     }
 
-    function updateStats() {
-        const hist = getHistory();
-        const total = hist.length;
-        const hsCount = hist.filter(h => h.type === "HS").length;
-        const cwCount = hist.filter(h => h.type === "Zollwert").length;
-        const text = total
-            ? `Gesamt: ${total} Anfragen · HS-Code: ${hsCount} · Zollwert: ${cwCount}`
-            : "Noch keine Anfragen gesendet.";
-        document.getElementById("statsText").textContent = text;
+    async function updateStats() {
+        try {
+            const res = await fetch(BASE + "/events?limit=100");
+            const data = await res.json();
+            const total = data.length;
+            const hsCount = data.filter(e => e.type === "HS").length;
+            const cwCount = data.filter(e => e.type === "Zollwert").length;
+            const text = total
+                ? `Gesamt: ${total} Anfragen · HS-Code: ${hsCount} · Zollwert: ${cwCount}`
+                : "Noch keine Anfragen gesendet.";
+            document.getElementById("statsText").textContent = text;
+        } catch {
+            document.getElementById("statsText").textContent = "Aktivität konnte nicht geladen werden.";
+        }
     }
 
     async function classify() {
         const description = document.getElementById("desc").value;
         const box = document.getElementById("classifyResult");
         box.textContent = "Sende Anfrage...";
-
         try {
             const res = await fetch(BASE + "/classify", {
                 method: "POST",
@@ -445,12 +298,7 @@
             });
             const data = await res.json();
             box.textContent = JSON.stringify(data, null, 2);
-
-            saveHistory({
-                type: "HS",
-                time: Date.now(),
-                summary: `Beschreibung: ${description.slice(0, 60)}... · HS: ${data.hs_code || "?"}`
-            });
+            updateStats();
         } catch (e) {
             box.textContent = "Fehler: " + e.toString();
         }
@@ -463,7 +311,6 @@
         const insurance = parseFloat(document.getElementById("insurance").value);
         const box = document.getElementById("customsResult");
         box.textContent = "Sende Anfrage...";
-
         try {
             const res = await fetch(BASE + "/customs-value", {
                 method: "POST",
@@ -472,12 +319,7 @@
             });
             const data = await res.json();
             box.textContent = JSON.stringify(data, null, 2);
-
-            saveHistory({
-                type: "Zollwert",
-                time: Date.now(),
-                summary: `Preis: ${price} ${currency} · Zollwert: ${data.customs_value ?? "?"} EUR`
-            });
+            updateStats();
         } catch (e) {
             box.textContent = "Fehler: " + e.toString();
         }
