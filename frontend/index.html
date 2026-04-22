@@ -118,6 +118,8 @@
             <button id="nav-hs" onclick="showSection('hs')">HS-Code</button>
             <button id="nav-customs" onclick="showSection('customs')">Zollwert</button>
             <button id="nav-history" onclick="showSection('history')">Verlauf</button>
+            <button id="nav-news" onclick="showSection('news')">News</button>
+            <button id="nav-chat" onclick="showSection('chat')">Messenger</button>
         </div>
 
         <div class="sidebar-footer">
@@ -134,7 +136,7 @@
         <div class="content">
             <div id="section-dashboard">
                 <h1>Dashboard</h1>
-                <div class="subtitle">Überblick über deine HS-Code Klassifizierungen und Zollwert-Berechnungen.</div>
+                <div class="subtitle">Überblick über deine HS-Code Klassifizierungen, Zollwert-Berechnungen, News und Chat.</div>
                 <div class="grid">
                     <div class="card">
                         <div class="card-header">Aktivität</div>
@@ -196,12 +198,32 @@
                     </div>
                 </div>
             </div>
+
+            <div id="section-news" style="display:none;">
+                <h1>Zoll News</h1>
+                <div class="subtitle">Automatisch aktualisierte Nachrichten vom deutschen Zoll.</div>
+                <div class="card">
+                    <div class="card-header">News</div>
+                    <div id="newsList" class="muted">Lade News...</div>
+                </div>
+            </div>
+
+            <div id="section-chat" style="display:none;">
+                <h1>Messenger</h1>
+                <div class="card">
+                    <div class="card-header">Chat</div>
+                    <div id="chatBox" class="result-box" style="height:200px; overflow-y:auto;">Lade...</div>
+                    <input id="chatInput" placeholder="Nachricht eingeben...">
+                    <button class="primary" onclick="sendChat()">Senden</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    const BASE = "https://zoll-ai-platform.onrender.com"; // deine Backend-URL
+    // HIER DEINE BACKEND-URL EINTRAGEN
+    const BASE = "https://zoll-ai-platform.onrender.com";
 
     function fakeLogin() {
         const name = document.getElementById("loginName").value.trim() || "User";
@@ -210,6 +232,8 @@
         document.getElementById("loginView").style.display = "none";
         document.getElementById("appView").style.display = "flex";
         loadHistory();
+        loadNews();
+        loadChat();
         updateStats();
     }
 
@@ -220,18 +244,22 @@
             document.getElementById("loginView").style.display = "none";
             document.getElementById("appView").style.display = "flex";
             loadHistory();
+            loadNews();
+            loadChat();
             updateStats();
         }
     }
 
     function showSection(section) {
-        const sections = ["dashboard", "hs", "customs", "history"];
+        const sections = ["dashboard", "hs", "customs", "history", "news", "chat"];
         sections.forEach(s => {
             document.getElementById("section-" + s).style.display =
                 (s === section) ? "block" : "none";
             document.getElementById("nav-" + s).classList.toggle("active", s === section);
         });
         if (section === "history") loadHistory();
+        if (section === "news") loadNews();
+        if (section === "chat") loadChat();
         if (section === "dashboard") updateStats();
     }
 
@@ -286,6 +314,58 @@
         }
     }
 
+    async function loadNews() {
+        const box = document.getElementById("newsList");
+        box.textContent = "Lade News...";
+        try {
+            const res = await fetch(BASE + "/news");
+            const data = await res.json();
+            if (!data.length) {
+                box.textContent = "Noch keine News gespeichert. Cronjob /news/update ausführen.";
+                return;
+            }
+            box.innerHTML = "";
+            data.forEach(n => {
+                const div = document.createElement("div");
+                div.className = "history-item";
+                div.innerHTML = `<b>${n.title}</b><br>
+                                 <a href="${n.url}" target="_blank">${n.url}</a><br>
+                                 <span class="muted">${n.source}</span>`;
+                box.appendChild(div);
+            });
+        } catch (e) {
+            box.textContent = "Fehler: " + e.toString();
+        }
+    }
+
+    async function loadChat() {
+        const box = document.getElementById("chatBox");
+        box.textContent = "Lade...";
+        try {
+            const res = await fetch(BASE + "/messages");
+            const data = await res.json();
+            box.innerHTML = "";
+            data.reverse().forEach(m => {
+                const div = document.createElement("div");
+                div.innerHTML = `<b>${m.sender}:</b> ${m.text}`;
+                box.appendChild(div);
+            });
+        } catch (e) {
+            box.textContent = "Fehler: " + e.toString();
+        }
+    }
+
+    async function sendChat() {
+        const text = document.getElementById("chatInput").value;
+        if (!text.trim()) return;
+        const sender = localStorage.getItem("ludaraUser") || "User";
+        await fetch(BASE + `/messages/send?sender=${encodeURIComponent(sender)}&text=${encodeURIComponent(text)}`, {
+            method: "POST"
+        });
+        document.getElementById("chatInput").value = "";
+        loadChat();
+    }
+
     async function classify() {
         const description = document.getElementById("desc").value;
         const box = document.getElementById("classifyResult");
@@ -299,6 +379,7 @@
             const data = await res.json();
             box.textContent = JSON.stringify(data, null, 2);
             updateStats();
+            loadHistory();
         } catch (e) {
             box.textContent = "Fehler: " + e.toString();
         }
@@ -320,6 +401,7 @@
             const data = await res.json();
             box.textContent = JSON.stringify(data, null, 2);
             updateStats();
+            loadHistory();
         } catch (e) {
             box.textContent = "Fehler: " + e.toString();
         }
