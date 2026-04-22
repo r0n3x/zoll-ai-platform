@@ -1,7 +1,4 @@
 fastapi
 uvicorn
-requests
-beautifulsoup4
 pydantic
-sqlalchemy
-python-multipart
+sqlmodel
