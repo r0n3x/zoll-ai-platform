@@ -1,7 +1,5 @@
 fastapi
-uvicorn[standard]
-sqlalchemy
-psycopg2-binary
-passlib[bcrypt]
-python-jose[cryptography]
-httpx
+uvicorn
+requests
+beautifulsoup4
+pydantic
