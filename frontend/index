@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LUDARA ai – Customs Intelligence</title>
+<style>
+    :root {
+        --blue: #1e6edb;
+        --blue-dark: #155bb5;
+        --bg: #f7f7f7;
+        --beige: #f5efe4;
+        --light-blue: #eef3ff;
+        --light-gray: #e0e0e0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: #333;
+    }
+
+    .app {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 230px;
+        background: white;
+        border-right: 1px solid var(--light-gray);
+        padding: 20px 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .logo-block {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .logo-block svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-text-main {
+        font-size: 22px;
+        font-weight: bold;
+        color: var(--blue);
+    }
+
+    .logo-text-sub {
+        font-size: 11px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .nav button {
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .nav button.active {
+        background: var(--light-blue);
+        color: var(--blue);
+        font-weight: bold;
+    }
+
+    .sidebar-footer {
+        margin-top: auto;
+        font-size: 11px;
+        color: #999;
+    }
+
+    /* Main area */
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topbar {
+        background: white;
+        border-bottom: 1px solid var(--light-gray);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-pill {
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: var(--beige);
+        font-size: 13px;
+    }
+
+    .content {
+        padding: 25px;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    h1 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        color: #777;
+        margin-bottom: 20px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 18px;
+    }
+
+    .card-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: var(--blue);
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+        font-size: 13px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: #f0f4fa;
+        font-size: 14px;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button.primary {
+        margin-top: 12px;
+        padding: 10px 16px;
+        background: var(--blue);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button.primary:hover {
+        background: var(--blue-dark);
+    }
+
+    .result-box {
+        background: var(--light-blue);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        border: 1px solid #cdd9f5;
+        white-space: pre-wrap;
+        font-size: 13px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: var(--light-blue);
+        color: var(--blue);
+        margin-left: 6px;
+    }
+
+    .muted {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .history-item {
+        border-bottom: 1px solid #eee;
+        padding: 6px 0;
+        font-size: 13px;
+    }
+
+    .history-item:last-child {
+        border-bottom: none;
+    }
+
+    .pill {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: #f0f0f0;
+        margin-right: 4px;
+    }
+
+    .login-box {
+        max-width: 360px;
+        margin: 80px auto;
+        background: white;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .login-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .login-sub {
+        font-size: 12px;
+        color: #777;
+        margin-bottom: 15px;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .login-btn {
+        margin-top: 12px;
+        width: 100%;
+        padding: 9px;
+        border-radius: 6px;
+        border: none;
+        background: var(--blue);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .login-btn:hover {
+        background: var(--blue-dark);
+    }
+
+    .small-note {
+        font-size: 11px;
+        color: #999;
+        margin-top: 8px;
+    }
+</style>
+</head>
+<body>
+
+<div id="loginView">
+    <div class="login-box">
+        <div class="logo-block" style="justify-content:center; margin-bottom:15px;">
+            <svg viewBox="0 0 100 100" fill="#1e6edb">
+                <circle cx="50" cy="50" r="45" stroke="#1e6edb" stroke-width="6" fill="none"/>
+                <path d="M30 60 L50 30 L70 60 Z" fill="#1e6edb"/>
+            </svg>
+        </div>
+        <div class="login-title">LUDARA ai</div>
+        <div class="login-sub">Customs & HS-Code Intelligence</div>
+        <input id="loginName" class="login-input" placeholder="Name eingeben (Demo-Login)">
+        <button class="login-btn" onclick="fakeLogin()">Login</button>
+        <div class="small-note">Kein echtes Login – nur für die Demo.</div>
+    </div>
+</div>
+
+<div id="appView" class="app" style="display:none;">
+    <div class="sidebar">
+        <div class="logo-block">
+            <svg viewBox="0 0 100 100" fill="#1e6edb">
+                <circle cx="50" cy="50" r="45" stroke="#1e6edb" stroke-width="6" fill="none"/>
+                <path d="M30 60 L50 30 L70 60 Z" fill="#1e6edb"/>
+            </svg>
+            <div>
+                <div class="logo-text-main">LUDARA ai</div>
+                <div class="logo-text-sub">Customs Intelligence</div>
+            </div>
+        </div>
+
+        <div class="nav">
+            <button id="nav-dashboard" class="active" onclick="showSection('dashboard')">Dashboard</button>
+            <button id="nav-hs" onclick="showSection('hs')">HS-Code</button>
+            <button id="nav-customs" onclick="showSection('customs')">Zollwert</button>
+            <button id="nav-history" onclick="showSection('history')">Verlauf</button>
+        </div>
+
+        <div class="sidebar-footer">
+            © LUDARA ai<br>
+            Demo UI – keine Rechtsberatung
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="user-pill" id="userPill">User</div>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard -->
+            <div id="section-dashboard">
+                <h1>Dashboard</h1>
+                <div class="subtitle">Überblick über deine HS-Code Klassifizierungen und Zollwert-Berechnungen.</div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">Aktivität</div>
+                        <div class="muted" id="statsText">
+                            Noch keine Anfragen gesendet.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Hinweis</div>
+                        <div class="muted">
+                            Dieses Tool ist eine technische Demo. Ergebnisse sind vereinfacht und ersetzen keine verbindliche Zollauskunft.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HS-Code -->
+            <div id="section-hs" style="display:none;">
+                <h1>HS-Code Klassifizierung <span class="badge">API</span></h1>
+                <div class="subtitle">Beschreibungen eingeben, um einen HS-Code-Vorschlag zu erhalten.</div>
+
+                <div class="card">
+                    <div class="card-header">Eingabe</div>
+                    <label>Beschreibung</label>
+                    <textarea id="desc" rows="4" placeholder="Produktbeschreibung eingeben..."></textarea>
+                    <button class="primary" onclick="classify()">HS-Code bestimmen</button>
+                    <div id="classifyResult" class="result-box"></div>
+                </div>
+            </div>
+
+            <!-- Customs -->
+            <div id="section-customs" style="display:none;">
+                <h1>Zollwert Berechnung <span class="badge">API</span></h1>
+                <div class="subtitle">Berechnung des Zollwerts auf Basis von Preis, Fracht und Versicherung.</div>
+
+                <div class="card">
+                    <div class="card-header">Eingabe</div>
+
+                    <label>Preis</label>
+                    <input type="number" id="price" value="100">
+
+                    <label>Währung</label>
+                    <select id="currency">
+                        <option>USD</option>
+                        <option>EUR</option>
+                        <option>GBP</option>
+                        <option>CHF</option>
+                    </select>
+
+                    <label>Fracht</label>
+                    <input type="number" id="freight" value="10">
+
+                    <label>Versicherung</label>
+                    <input type="number" id="insurance" value="5">
+
+                    <button class="primary" onclick="customs()">Zollwert berechnen</button>
+                    <div id="customsResult" class="result-box"></div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div id="section-history" style="display:none;">
+                <h1>Verlauf</h1>
+                <div class="subtitle">Lokaler Verlauf deiner letzten Anfragen (nur in diesem Browser gespeichert).</div>
+
+                <div class="card">
+                    <div class="card-header">Historie</div>
+                    <div id="historyList" class="muted">
+                        Noch keine Einträge.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const BASE = "https://ludara-ai.onrender.com/" ;  
+    // z.B. https://ludara-backend.onrender.com
+
+    function fakeLogin() {
+        const name = document.getElementById("loginName").value.trim() || "User";
+        localStorage.setItem("ludaraUser", name);
+        document.getElementById("userPill").textContent = name;
+        document.getElementById("loginView").style.display = "none";
+        document.getElementById("appView").style.display = "flex";
+        loadHistory();
+        updateStats();
+    }
+
+    function initLogin() {
+        const name = localStorage.getItem("ludaraUser");
+        if (name) {
+            document.getElementById("userPill").textContent = name;
+            document.getElementById("loginView").style.display = "none";
+            document.getElementById("appView").style.display = "flex";
+            loadHistory();
+            updateStats();
+        }
+    }
+
+    function showSection(section) {
+        const sections = ["dashboard", "hs", "customs", "history"];
+        sections.forEach(s => {
+            document.getElementById("section-" + s).style.display =
+                (s === section) ? "block" : "none";
+            document.getElementById("nav-" + s).classList.toggle("active", s === section);
+        });
+    }
+
+    function getHistory() {
+        try {
+            return JSON.parse(localStorage.getItem("ludaraHistory") || "[]");
+        } catch {
+            return [];
+        }
+    }
+
+    function saveHistory(entry) {
+        const hist = getHistory();
+        hist.unshift(entry);
+        localStorage.setItem("ludaraHistory", JSON.stringify(hist.slice(0, 50)));
+        loadHistory();
+        updateStats();
+    }
+
+    function loadHistory() {
+        const hist = getHistory();
+        const container = document.getElementById("historyList");
+        if (!hist.length) {
+            container.textContent = "Noch keine Einträge.";
+            return;
+        }
+        container.innerHTML = "";
+        hist.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "history-item";
+            div.innerHTML =
+                '<span class="pill">' + item.type + '</span>' +
+                '<span class="muted">' + new Date(item.time).toLocaleString() + '</span><br>' +
+                (item.summary || "");
+            container.appendChild(div);
+        });
+    }
+
+    function updateStats() {
+        const hist = getHistory();
+        const total = hist.length;
+        const hsCount = hist.filter(h => h.type === "HS").length;
+        const cwCount = hist.filter(h => h.type === "Zollwert").length;
+        const text = total
+            ? `Gesamt: ${total} Anfragen · HS-Code: ${hsCount} · Zollwert: ${cwCount}`
+            : "Noch keine Anfragen gesendet.";
+        document.getElementById("statsText").textContent = text;
+    }
+
+    async function classify() {
+        const description = document.getElementById("desc").value;
+        const box = document.getElementById("classifyResult");
+        box.textContent = "Sende Anfrage...";
+
+        try {
+            const res = await fetch(BASE + "/classify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ description })
+            });
+            const data = await res.json();
+            box.textContent = JSON.stringify(data, null, 2);
+
+            saveHistory({
+                type: "HS",
+                time: Date.now(),
+                summary: `Beschreibung: ${description.slice(0, 60)}... · HS: ${data.hs_code || "?"}`
+            });
+        } catch (e) {
+            box.textContent = "Fehler: " + e.toString();
+        }
+    }
+
+    async function customs() {
+        const price = parseFloat(document.getElementById("price").value);
+        const currency = document.getElementById("currency").value;
+        const freight = parseFloat(document.getElementById("freight").value);
+        const insurance = parseFloat(document.getElementById("insurance").value);
+        const box = document.getElementById("customsResult");
+        box.textContent = "Sende Anfrage...";
+
+        try {
+            const res = await fetch(BASE + "/customs-value", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ price, currency, freight, insurance })
+            });
+            const data = await res.json();
+            box.textContent = JSON.stringify(data, null, 2);
+
+            saveHistory({
+                type: "Zollwert",
+                time: Date.now(),
+                summary: `Preis: ${price} ${currency} · Zollwert: ${data.customs_value ?? "?"} EUR`
+            });
+        } catch (e) {
+            box.textContent = "Fehler: " + e.toString();
+        }
+    }
+
+    initLogin();
+</script>
+
+</body>
+</html>
