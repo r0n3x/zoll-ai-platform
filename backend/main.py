@@ -1,7 +1,8 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from utils import classify_hs_code, calculate_customs_value
-from crawler import crawl_description
+import utils
+
+app = FastAPI()
+
 
 app = FastAPI(title="LUDARA AI Backend")
 
