@@ -417,7 +417,7 @@
 
 <script>
     const BASE = "https://ludara-ai.onrender.com";  
-    // z.B. https://ludara-backend.onrender.com
+    // z.B. https://ludara-ai.onrender.com
 
     function fakeLogin() {
         const name = document.getElementById("loginName").value.trim() || "User";
