@@ -1,6 +1,6 @@
 # utils.py
 # Utility functions for LUDARA AI backend
-from backend import utils
+
 
 
 import re
