@@ -5,7 +5,7 @@ DATABASE_URL = "sqlite:///./ludara.db"
 engine = create_engine(DATABASE_URL, echo=False)
 
 def init_db():
-    from . import models  # wichtig, damit Tabellen bekannt sind
+    from import models  # wichtig, damit Tabellen bekannt sind
     SQLModel.metadata.create_all(engine)
 
 def get_session():
