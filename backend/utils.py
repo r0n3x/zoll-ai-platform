@@ -1,4 +1,8 @@
-# einfache, aber „echte“ Logik (regelbasiert + FX-Tabelle)
+import feedparser
+
+# -----------------------------
+# HS-Code Klassifizierung (regelbasiert)
+# -----------------------------
 
 def classify_hs_code(text: str) -> str:
     t = text.lower()
@@ -17,6 +21,10 @@ def classify_hs_code(text: str) -> str:
             return code
 
     return "999999"  # unbekannt / sonstige
+
+# -----------------------------
+# Währungsumrechnung + Zollwert
+# -----------------------------
 
 FX_RATES = {
     "EUR": 1.00,
@@ -39,3 +47,19 @@ def calculate_customs_value(price: float, currency: str, freight: float, insuran
         "customs_value": round(customs_value, 2),
         "currency_used": "EUR",
     }
+
+# -----------------------------
+# Zoll-News (RSS-Feed)
+# -----------------------------
+
+def fetch_customs_news():
+    # HIER KANNST DU SPÄTER ANDERE FEEDS EINTRAGEN
+    feed = feedparser.parse("https://www.zoll.de/SiteGlobals/Functions/RSSFeed/RSSNewsfeed.xml")
+    items = []
+    for entry in feed.entries[:10]:
+        items.append({
+            "title": entry.title,
+            "url": entry.link,
+            "source": "Zoll.de"
+        })
+    return items
