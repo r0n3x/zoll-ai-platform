@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 from datetime import datetime
 
-from .utils import classify_hs_code, calculate_customs_value, fetch_customs_news
-from .database import init_db, get_session
-from .models import (
+from utils import classify_hs_code, calculate_customs_value, fetch_customs_news
+from database import init_db, get_session
+from models import (
     ClassifyRequestModel,
     CustomsValueRequestModel,
     NewsItem,
