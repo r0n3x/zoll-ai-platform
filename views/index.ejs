@@ -1,103 +1,90 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoll Pro Plattform</title>
+    <title>Zoll Pro - Free Version</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #e9ebee; margin: 0; padding-top: 50px; }
-        header { background: #4267b2; color: white; padding: 10px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; justify-content: space-around; }
-        .main { max-width: 800px; margin: auto; padding: 10px; }
-        .card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        #news-box { height: 100px; overflow-y: scroll; border-left: 3px solid #4267b2; padding-left: 10px; }
-        #chat-window { height: 150px; overflow-y: auto; background: #f0f2f5; padding: 10px; margin-bottom: 5px; }
-        canvas { background: #000; display: block; margin: 10px auto; width: 100%; max-width: 400px; height: 200px; border-radius: 5px; }
-        button { background: #4267b2; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; }
-        input, select { padding: 8px; margin: 5px 0; width: 90%; }
+        body { font-family: sans-serif; background: #f0f2f5; margin:0; padding-top:60px; }
+        .fb-header { background: #4267b2; color:white; padding:10px; position:fixed; top:0; width:100%; display:flex; justify-content:space-around; align-items:center; z-index:1000; }
+        .card { background:white; margin:10px; padding:15px; border-radius:8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .scroll-news { height: 100px; overflow-y: scroll; border-left: 3px solid #4267b2; padding-left:10px; }
+        #chat-window { height: 150px; overflow-y: auto; background: #eee; padding:5px; margin-bottom:5px; }
+        canvas { background:#000; display:block; margin:auto; width:100%; max-width:300px; height:150px; }
+        input, select, button { width:100%; padding:10px; margin:5px 0; border-radius:5px; border:1px solid #ccc; }
+        button { background:#4267b2; color:white; font-weight:bold; cursor:pointer; }
     </style>
 </head>
 <body>
 
-<header>
-    <span><b>Zoll-App</b></span>
-    <input type="text" placeholder="User suchen..." style="width: 40%;">
+<div class="fb-header">
+    <span><b>ZollApp</b></span>
+    <input type="text" placeholder="Suche User/ID..." style="width:50%; margin:0;">
     <span>ID: 1.001</span>
-</header>
+</div>
 
-<div class="main">
-    <div class="card">
-        <h3>Zoll News (Scrollbar)</h3>
-        <div id="news-box">
-            <% news.forEach(n => { %>
-                <p><strong><%= n.d %>:</strong> <%= n.t %></p>
-            <% }) %>
-        </div>
+<div class="card">
+    <h3>Aktuelle Zoll-News</h3>
+    <div class="scroll-news">
+        <% news.forEach(n => { %> <p><b><%= n.d %>:</b> <%= n.t %></p> <% }) %>
     </div>
+</div>
 
-    <div class="card">
-        <h3>Zollwert- & Währungsrechner</h3>
-        <input type="number" id="val" placeholder="Warenwert">
-        <select id="curr"><option value="USD">USD</option><option value="GBP">GBP</option><option value="CNY">CNY</option></select>
-        <button onclick="calc()">Berechnen (in EUR)</button>
-        <p id="res"></p>
-        <hr>
-        <h3>HS-Code Finder</h3>
-        <input type="text" placeholder="z.B. Smartphone">
-        <button onclick="alert('Datenbank-Suche aktiv...')">In Datenbank suchen</button>
-    </div>
+<div class="card">
+    <h3>Zollrechner & HS-Finder</h3>
+    <input type="number" id="val" placeholder="Warenwert">
+    <select id="curr"><option value="USD">USD</option><option value="GBP">GBP</option></select>
+    <button onclick="calc()">Berechnen</button>
+    <p id="res"></p>
+    <hr>
+    <input type="text" placeholder="HS-Code / Ware suchen...">
+    <button>In Online-Datenbank suchen</button>
+</div>
 
-    <div class="card">
-        <h3>Community Chat & Bilder</h3>
-        <div id="chat-window"></div>
-        <input type="text" id="m" placeholder="Nachricht...">
-        <button onclick="send()">Senden</button>
-    </div>
+<div class="card">
+    <h3>Online Chat (Echtzeit)</h3>
+    <div id="chat-window"></div>
+    <input type="text" id="m" placeholder="Nachricht...">
+    <button onclick="send()">Senden</button>
+</div>
 
-    <div class="card">
-        <h3>Spielebereich (5 Games)</h3>
-        <select id="game" onchange="startG()">
-            <option value="1">1. Zoll-Snake (Pakete sammeln)</option>
-            <option value="2">2. Steuer-Clicker</option>
-            <option value="3">3. Border-Pong</option>
-            <option value="4">4. Waren-Memory</option>
-            <option value="5">5. Zoll-Labyrinth</option>
-        </select>
-        <canvas id="gc"></canvas>
-    </div>
+<div class="card">
+    <h3>Spielebereich (5 Browsergames)</h3>
+    <select id="gameSelect" onchange="gameLoad()">
+        <option value="1">1. Zoll-Snake</option>
+        <option value="2">2. Steuer-Clicker</option>
+        <option value="3">3. Border-Pong</option>
+        <option value="4">4. Waren-Memory</option>
+        <option value="5">5. Zoll-Labyrinth</option>
+    </select>
+    <canvas id="gameCanvas"></canvas>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
-    const canvas = document.getElementById('gc');
-    const ctx = canvas.getContext('2d');
-
-    // Chat Funktion
     function send() { 
-        const msg = document.getElementById('m').value;
-        socket.emit('chatMsg', msg);
+        const m = document.getElementById('m').value;
+        socket.emit('chatMsg', m); 
         document.getElementById('m').value = '';
     }
     socket.on('chatMsg', m => { 
         document.getElementById('chat-window').innerHTML += `<div><b>User:</b> ${m}</div>`;
     });
 
-    // Währungsrechner
     async function calc() {
         const v = document.getElementById('val').value;
         const c = document.getElementById('curr').value;
-        const res = await fetch('/api/cur');
-        const data = await res.json();
-        const eur = v / data[c];
-        document.getElementById('res').innerText = "Ergebnis: " + eur.toFixed(2) + " EUR";
+        const r = await fetch('/api/cur');
+        const data = await r.json();
+        document.getElementById('res').innerText = "Wert: " + (v / data[c]).toFixed(2) + " EUR";
     }
 
-    // Einfache Spiele-Demo (Snake Start)
-    function startG() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function gameLoad() {
+        const ctx = document.getElementById('gameCanvas').getContext('2d');
         ctx.fillStyle = "white";
-        ctx.fillText("Spiel startet...", 50, 50);
-        // Hier wird je nach Auswahl das Game-Script aktiviert
+        ctx.clearRect(0,0,300,150);
+        ctx.fillText("Spiel startet...", 110, 75);
     }
 </script>
 </body>
