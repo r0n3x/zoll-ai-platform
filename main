@@ -1,0 +1,33 @@
+zoll-ai-platform/
+│
+├── docker-compose.yml
+│
+├── backend/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── .env   (NICHT in GitHub hochladen!)
+│   │
+│   └── app/
+│       ├── main.py
+│       ├── config.py
+│       ├── database.py
+│       ├── models.py
+│       ├── ai_client.py
+│       ├── fx_client.py
+│       │
+│       └── routers/
+│           ├── __init__.py
+│           ├── auth.py
+│           ├── products.py
+│           ├── classifications.py
+│           ├── tariffs.py
+│           ├── news.py
+│           ├── chat.py
+│           └── customs_value.py
+│
+├── frontend/
+│   ├── Dockerfile
+│   └── dist/   (kommt später)
+│
+└── deploy/
+    └── nginx.conf
